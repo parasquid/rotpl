@@ -1,4 +1,5 @@
 require_relative "hotp"
+require_relative "totp"
 
 module Rotpl
   class GoogleAuthenticator < Totp
