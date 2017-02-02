@@ -74,9 +74,9 @@ describe Rotpl::Hotp do
           hotp = klass.generate_otp(
             secret,
             moving_factor,
-            code_digits,
-            add_checksum,
-            truncation_offfset
+            code_digits: 6,
+            add_checksum: false,
+            truncation_offfset: -1
           )
 
           expect(hotp).to eq(reference_otps[count])

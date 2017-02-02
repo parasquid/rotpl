@@ -8,7 +8,7 @@ module Rotpl
 
     def hmac(data)
       # text byte array and left pad with 0 bytes for blocksize 8
-      left_padded_data = data.chr.rjust(8, 0.chr)
+      left_padded_data = [data].pack("N").rjust(8, 0.chr)
       OpenSSL::HMAC.hexdigest(@digest_factory, @secret, left_padded_data)
     end
 
@@ -19,9 +19,9 @@ module Rotpl
     def self.generate_otp(
         secret,                 # byte[]
         moving_factor,          # long
-        code_digits,            # int
-        add_checksum,           # boolean
-        truncation_offfset      # int
+        code_digits: 6,
+        add_checksum: false,
+        truncation_offfset: -1
     )
 
       # compute hmac hash and convert to byte array
