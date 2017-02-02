@@ -1,8 +1,8 @@
 require "spec_helper"
-require_relative "../lib/one_time_password_algorithm"
+require_relative "../lib/hotp"
 
-describe OneTimePasswordAlgorithm do
-  Given(:klass) { OneTimePasswordAlgorithm }
+describe Rotpl::Hotp do
+  Given(:klass) { Rotpl::Hotp }
   Given(:secret) { "12345678901234567890" }
 
   describe "hmac_sha1" do
