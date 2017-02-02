@@ -66,7 +66,7 @@ describe Rotpl::Hotp do
 
     context "all hotp" do
       Given(:moving_factors) { [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
-      Given(:reference_otps) { [755224, 287082, 359152, 969429, 338314, 254676, 287922, 162583, 399871, 520489] }
+      Given(:reference_otps) { %w(755224 287082 359152 969429 338314 254676 287922 162583 399871 520489) }
       Given(:moving_factor) { }
       Then {
         (0..9).each { |count|

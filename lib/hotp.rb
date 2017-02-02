@@ -40,7 +40,7 @@ module Rotpl
                 (hash[offset + 2].ord & 0xff) <<  8 |
                 (hash[offset + 3].ord & 0xff)
 
-      otp = binary % (10 ** code_digits)
+      otp = (binary % (10 ** code_digits)).to_s.rjust(code_digits, "0")
     end
 
   end
