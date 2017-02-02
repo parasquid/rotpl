@@ -14,7 +14,7 @@ Copyright
 
 The code has been mostly derived from the original reference implementation of [RFC 6238](https://tools.ietf.org/html/rfc6238):
 
-    Copyright (c) <insert year> IETF Trust and the persons identified as authors of the code. All rights reserved.
+    Copyright (c) 2011 IETF Trust and the persons identified as authors of the code. All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
       * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
