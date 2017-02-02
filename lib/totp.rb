@@ -4,7 +4,7 @@ require "base32"
 module Rotpl
   class Totp
     def initialize(secret, hotp: Hotp, time_step: 30)
-      @secret = Base32.decode(secret.delete(" ").upcase)
+      @secret = secret
       @hotp = hotp
       @time_step = time_step
     end
