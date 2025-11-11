@@ -1,5 +1,5 @@
 require "spec_helper"
-require_relative "../lib/hotp"
+require "rotpl"
 
 describe Rotpl::Hotp do
   Given(:klass) { Rotpl::Hotp }

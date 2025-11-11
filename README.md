@@ -13,29 +13,30 @@ A Ruby implementation of HMAC-based One-Time Password (HOTP) and Time-based One-
 
 ## Installation
 
-This library is currently distributed as source code. To use it in your project:
-
-1. Copy the `lib/` directory into your project
-2. Install the required dependency for Google Authenticator support:
-
-```bash
-gem install base32
-```
-
-Or add to your Gemfile:
+Add this line to your application's Gemfile:
 
 ```ruby
-gem 'base32'
+gem 'rotpl'
 ```
 
-Note: The `base32` gem is only required if you plan to use `GoogleAuthenticator`. The core `Hotp` and `Totp` classes have no external dependencies.
+And then execute:
+
+```bash
+bundle install
+```
+
+Or install it yourself as:
+
+```bash
+gem install rotpl
+```
 
 ## Quick Start
 
 ### Google Authenticator (Most Common Use Case)
 
 ```ruby
-require_relative 'lib/google_authenticator'
+require 'rotpl'
 
 # Secret from Google Authenticator QR code
 secret = "JBSWY3DPEHPK3PXP"
@@ -58,7 +59,7 @@ end
 ### Time-based OTP (TOTP)
 
 ```ruby
-require_relative 'lib/totp'
+require 'rotpl'
 
 # Use a binary secret (not Base32-encoded)
 secret = "12345678901234567890"
@@ -80,7 +81,7 @@ codes = totp.generate_otp
 ### Counter-based OTP (HOTP)
 
 ```ruby
-require_relative 'lib/hotp'
+require 'rotpl'
 
 secret = "12345678901234567890"
 
@@ -102,7 +103,7 @@ otp = Rotpl::Hotp.generate_otp(secret, 0, code_digits: 8)
 ### Building a Login System
 
 ```ruby
-require_relative 'lib/google_authenticator'
+require 'rotpl'
 
 class TwoFactorAuth
   def initialize(user_secret)
