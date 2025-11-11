@@ -13,17 +13,22 @@ A Ruby implementation of HMAC-based One-Time Password (HOTP) and Time-based One-
 
 ## Installation
 
-Add to your Gemfile:
+This library is currently distributed as source code. To use it in your project:
 
-```ruby
-gem 'base32'  # Required for Google Authenticator support
-```
-
-Or install directly:
+1. Copy the `lib/` directory into your project
+2. Install the required dependency for Google Authenticator support:
 
 ```bash
 gem install base32
 ```
+
+Or add to your Gemfile:
+
+```ruby
+gem 'base32'
+```
+
+Note: The `base32` gem is only required if you plan to use `GoogleAuthenticator`. The core `Hotp` and `Totp` classes have no external dependencies.
 
 ## Quick Start
 
