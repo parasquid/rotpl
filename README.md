@@ -1,5 +1,7 @@
 # ROTPL - Ruby OTP-Two-Factor-authentication Library
 
+[![Gem Version](https://badge.fury.io/rb/rotpl.svg)](https://badge.fury.io/rb/rotpl)
+
 A Ruby implementation of HMAC-based One-Time Password (HOTP) and Time-based One-Time Password (TOTP) algorithms, fully compatible with Google Authenticator.
 
 ## Features
@@ -10,32 +12,40 @@ A Ruby implementation of HMAC-based One-Time Password (HOTP) and Time-based One-
 - Clock skew tolerance (±30 seconds by default)
 - Clean, testable API with dependency injection
 - RFC test vector validation
+- Comprehensive test suite (58 passing specs)
 
 ## Installation
 
-This library is currently distributed as source code. To use it in your project:
-
-1. Copy the `lib/` directory into your project
-2. Install the required dependency for Google Authenticator support:
-
-```bash
-gem install base32
-```
-
-Or add to your Gemfile:
+Add this line to your application's Gemfile:
 
 ```ruby
-gem 'base32'
+gem 'rotpl'
 ```
 
-Note: The `base32` gem is only required if you plan to use `GoogleAuthenticator`. The core `Hotp` and `Totp` classes have no external dependencies.
+And then execute:
+
+```bash
+bundle install
+```
+
+Or install it yourself as:
+
+```bash
+gem install rotpl
+```
+
+### Requirements
+
+- Ruby >= 2.6.0
+- Dependencies are automatically installed with the gem:
+  - `base32` (~> 0.3) - for Google Authenticator Base32 encoding
 
 ## Quick Start
 
 ### Google Authenticator (Most Common Use Case)
 
 ```ruby
-require_relative 'lib/google_authenticator'
+require 'rotpl'
 
 # Secret from Google Authenticator QR code
 secret = "JBSWY3DPEHPK3PXP"
@@ -58,7 +68,7 @@ end
 ### Time-based OTP (TOTP)
 
 ```ruby
-require_relative 'lib/totp'
+require 'rotpl'
 
 # Use a binary secret (not Base32-encoded)
 secret = "12345678901234567890"
@@ -80,7 +90,7 @@ codes = totp.generate_otp
 ### Counter-based OTP (HOTP)
 
 ```ruby
-require_relative 'lib/hotp'
+require 'rotpl'
 
 secret = "12345678901234567890"
 
@@ -102,7 +112,7 @@ otp = Rotpl::Hotp.generate_otp(secret, 0, code_digits: 8)
 ### Building a Login System
 
 ```ruby
-require_relative 'lib/google_authenticator'
+require 'rotpl'
 
 class TwoFactorAuth
   def initialize(user_secret)
@@ -127,7 +137,9 @@ end
 ### Generating QR Code Secrets
 
 ```ruby
-require 'base32'
+require 'rotpl'
+require 'securerandom'
+require 'base32' # included as a dependency with the gem
 
 # Generate a random secret for a new user
 random_secret = Base32.encode(SecureRandom.random_bytes(20))
@@ -141,12 +153,17 @@ user.update(two_factor_secret: random_secret)
 qr_url = "otpauth://totp/#{user.email}?secret=#{random_secret}&issuer=MyApp"
 
 # Generate QR code from qr_url and display to user
+# Use a QR code gem like 'rqrcode' to generate the actual QR image
 ```
 
 ### Handling Clock Skew
 
 ```ruby
+require 'rotpl'
+
 # TOTP returns 3 codes by default
+secret = "12345678901234567890"
+totp = Rotpl::Totp.new(secret)
 codes = totp.generate_otp
 # codes[0] = previous 30-second window
 # codes[1] = current 30-second window
@@ -161,6 +178,10 @@ end
 ### Custom Time Windows
 
 ```ruby
+require 'rotpl'
+
+secret = "12345678901234567890"
+
 # 60-second windows instead of 30
 totp = Rotpl::Totp.new(secret, time_step: 60)
 
@@ -184,16 +205,40 @@ All classes and methods include YARD documentation. Key classes:
 - `GoogleAuthenticator.new(base32_secret, time_step: 30)` - Initialize with Base32 secret
 - `#generate_otp(time = Time.now, code_digits: 6)` - Generate codes (returns array of 3)
 
-## Testing
+### Checking the Gem Version
 
-Run the test suite:
-
-```bash
-bundle install
-rspec
+```ruby
+require 'rotpl'
+puts Rotpl::VERSION  # => "0.1.0"
 ```
 
-Tests validate against official RFC 4226 and RFC 6238 test vectors.
+## Testing
+
+The gem includes a comprehensive test suite with 58 specs covering:
+- RFC 4226 (HOTP) test vectors
+- RFC 6238 (TOTP) test vectors
+- Google Authenticator compatibility
+- Clock skew tolerance
+- Edge cases and performance
+
+### Running Tests
+
+```bash
+# Clone the repository
+git clone https://github.com/parasquid/rotpl.git
+cd rotpl
+
+# Install dependencies
+bundle install
+
+# Run all tests
+rspec
+
+# Run with documentation format
+rspec --format documentation
+```
+
+All tests validate against official RFC 4226 and RFC 6238 test vectors.
 
 ## Security Considerations
 
@@ -204,18 +249,36 @@ Tests validate against official RFC 4226 and RFC 6238 test vectors.
 - Consider requiring backup codes for account recovery
 - Secrets should be at least 160 bits (20 bytes) for HMAC-SHA1
 
+## Development
+
+After checking out the repo, run `bundle install` to install dependencies. Then, run `rspec` to run the tests.
+
+To install this gem onto your local machine, run:
+
+```bash
+gem build rotpl.gemspec
+gem install rotpl-0.1.0.gem
+```
+
+To release a new version:
+1. Update the version number in `lib/rotpl/version.rb`
+2. Update the changelog
+3. Run `gem build rotpl.gemspec`
+4. Run `gem push rotpl-x.x.x.gem` (requires RubyGems account)
+
 ## Contributing
 
-1. Fork it
+1. Fork it (https://github.com/parasquid/rotpl/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Don't forget tests!
-6. Create new Pull Request
+3. Write tests for your changes
+4. Make your changes and ensure tests pass (`rspec`)
+5. Commit your changes (`git commit -am 'Add some feature'`)
+6. Push to the branch (`git push origin my-new-feature`)
+7. Create a new Pull Request
 
 ## License
 
-GNU LGPL v3 - See LICENSE file for details
+GNU LGPL v3 or later - See LICENSE file for details
 
 ## Copyright
 
